@@ -11,7 +11,7 @@ function Motogp() {
     try {
       const response = await fetch(`${url}${content}&apiKey=${APIKEY}`);
       const result = await response.json();
-      setArticles(result.articles);
+      setArticles(result.articles || []);
     } catch (error) {
       console.error("Error fetching news:", error);
     } finally {
@@ -20,22 +20,22 @@ function Motogp() {
   }
 
   useEffect(() => {
-    fetchNews("Motogp");
+    fetchNews("motogp");
   }, []);
 
   const containerStyle = {
     position: 'relative',
     width: '100%',
-    height: '100%',
+    minHeight: '100vh',
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     gap: '15px',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundImage: "url('wp6416437-motogp-20-wallpapers.jpg')",
+    backgroundImage: "url('/wp6416437-motogp-20-wallpapers.jpg')", // ✅ fixed for public/
     backgroundSize: 'cover',
-    backgroundPosition: 'right',
+    backgroundPosition: 'center',
   };
 
   const blurOverlayStyle = {
@@ -44,16 +44,18 @@ function Motogp() {
     left: 0,
     right: 0,
     bottom: 0,
-    background: "rgba(255, 255, 255, 0.8)", // Adjust this as needed for the blur effect
+    backgroundImage: "url('/wp6416437-motogp-20-wallpapers.jpg')", // ✅ match background
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     filter: 'blur(10px)',
-    zIndex: -1
+    zIndex: -1,
   };
 
   return (
     <div style={containerStyle}>
-        <h1 className='mt-5 text-white text-6xl  font-bold'>Top-Headlines</h1>
+      <h1 className="mt-5 text-white text-6xl font-bold">Top-Headlines</h1>
       <div style={blurOverlayStyle}></div>
-      <div className='px-14 py-12'>
+      <div className="px-14 py-12">
         <Component articles={articles} loading={loading} />
       </div>
     </div>
